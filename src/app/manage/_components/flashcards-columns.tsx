@@ -1,4 +1,5 @@
 import {ColumnDef} from '@tanstack/react-table';
+import {Flashcard} from '@/types/flashcard';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,27 +8,39 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {Button} from '@/components/ui/button';
 import {DotsHorizontalIcon} from '@radix-ui/react-icons';
-import { Category } from '@/types/category';
-import DialogUpdateCategory from '@/app/manage/_components/dialog-update-category';
-import DialogDeleteCategory from '@/app/manage/_components/dialog-delete-category';
+import DialogDeleteFlashcard from '@/app/manage/_components/dialog-delete-flashcard';
+import DialogUpdateFlashcard from '@/app/manage/_components/dialog-update-flashcard';
 
-export const categoriesColumns: ColumnDef<Category>[] = [
+export const flashcardColumns: ColumnDef<Flashcard>[] = [
   {
     accessorKey: 'id',
-    header: 'Id'
+    header: 'Id',
   },
   {
-    accessorKey: 'name',
-    header: 'Name',
+    accessorKey: 'question',
+    header: 'Question',
+  },
+  {
+    accessorKey: 'answer',
+    header: 'Answer',
   },
   {
     accessorKey: 'slug',
     header: 'Slug'
   },
   {
+    accessorKey: 'category',
+    header: 'Category',
+    accessorFn: originalRow => {
+      const { category } = originalRow;
+      return `${category?.name || '-'}`
+    }
+  },
+  {
     id: 'actions',
-    cell: ({row}) => {
-      const category = row.original;
+    cell: ({row, table}) => {
+      const flashcard = row.original;
+      const categories = (table.options?.meta as any)?.categories;
 
       return (
         <DropdownMenu>
@@ -38,12 +51,12 @@ export const categoriesColumns: ColumnDef<Category>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DialogUpdateCategory category={category}/>
+            <DialogUpdateFlashcard flashcard={flashcard} categories={categories} />
             <DropdownMenuSeparator/>
-            <DialogDeleteCategory categoryId={category.id}/>
+            <DialogDeleteFlashcard flashcardId={flashcard.id} />
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
-];
+]

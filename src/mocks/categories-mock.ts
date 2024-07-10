@@ -1,10 +1,10 @@
-import type {Category} from '@prisma/client';
+import {Category} from '@/types/category';
 
 export const categoriesMock: Category[] = [
   {
     id: 1,
     name: "Next.js",
-    slug: 'next-js'
+    slug: 'next-js',
   },
   {
     id: 2,

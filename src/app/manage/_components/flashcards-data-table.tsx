@@ -1,19 +1,25 @@
 'use client';
 
+import {Flashcard} from '@/types/flashcard';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {flexRender, getCoreRowModel, useReactTable} from '@tanstack/react-table';
-import {categoriesColumns} from './categories-columns';
+import {categoriesColumns} from '@/app/manage/_components/categories-columns';
+import {flashcardColumns} from '@/app/manage/_components/flashcards-columns';
 import {Category} from '@/types/category';
 
-type CategoriesDataTableProps = {
+type FlashcardsDataTableProps = {
+  flashcards: Flashcard[];
   categories: Category[];
-};
+}
 
-export function CategoriesDataTable({categories}: CategoriesDataTableProps) {
+export function FlashcardsDataTable({flashcards, categories}: FlashcardsDataTableProps) {
   const table = useReactTable({
-    data: categories,
-    columns: categoriesColumns,
+    data: flashcards,
+    columns: flashcardColumns,
     getCoreRowModel: getCoreRowModel(),
+    meta: {
+      categories: categories
+    }
   });
 
   return (
@@ -57,7 +63,7 @@ export function CategoriesDataTable({categories}: CategoriesDataTableProps) {
           ) : (
             <TableRow>
               <TableCell
-                colSpan={categoriesColumns.length + 1}
+                colSpan={flashcardColumns.length + 1}
                 className="h-24 text-center"
               >
                 No results.

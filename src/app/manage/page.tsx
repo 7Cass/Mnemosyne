@@ -1,18 +1,21 @@
 import {Card, CardContent, CardHeader} from '@/components/ui/card';
 import {CategoriesDataTable} from '@/app/manage/_components/categories-data-table';
-import {categoriesMock} from '@/mocks/categories-mock';
 import {DialogCreateCategory} from '@/app/manage/_components/dialog-create-category';
 import {getAllCategories} from '@/data-access/category';
+import {FlashcardsDataTable} from '@/app/manage/_components/flashcards-data-table';
+import {DialogCreateFlashcard} from '@/app/manage/_components/dialog-create-flashcard';
+import {getAllFlashcards} from '@/data-access/flashcard';
 
 export default async function Page() {
   const categories = await getAllCategories();
+  const flashcards = await getAllFlashcards();
 
   return (
     <div className="lg:grid grid-cols-[40%,60%] flex flex-col gap-6 p-8">
-      <Card className="">
+      <Card>
         <CardHeader className="flex flex-row justify-between items-center">
           <span className="font-bold text-3xl">Categories</span>
-          <DialogCreateCategory />
+          <DialogCreateCategory/>
         </CardHeader>
         <CardContent>
           <CategoriesDataTable categories={categories}/>
@@ -21,8 +24,10 @@ export default async function Page() {
       <Card>
         <CardHeader className="flex flex-row justify-between items-center">
           <span className="font-bold text-3xl">Flashcards</span>
+          <DialogCreateFlashcard categories={categories}/>
         </CardHeader>
         <CardContent>
+          <FlashcardsDataTable flashcards={flashcards} categories={categories} />
         </CardContent>
       </Card>
     </div>
